@@ -27,8 +27,9 @@
                 <div class="general-content-bottom ">
                     <div class="general-content-scrolleable overflow-y">
                         <?php include 'includes/sections/general-section.php'; ?>
-                        <?php include 'includes/modules/module-overlay.php'; ?>
+                       
                     </div>
+                     <?php include 'includes/modules/module-overlay.php'; ?>
                 </div>
             </div>
         </div>
