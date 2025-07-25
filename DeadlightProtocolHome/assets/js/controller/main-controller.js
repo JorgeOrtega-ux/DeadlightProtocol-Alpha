@@ -8,8 +8,6 @@ const langLinks = document.querySelectorAll('[data-lang]');
 const aspectoTextSpan = document.querySelector('[data-menu-item="aspecto-text"]');
 const lenguajeTextSpan = document.querySelector('[data-menu-item="lenguaje-text"]');
 const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-const footerLangButton = document.querySelector('.footer-button');
-const moduleFooter = document.querySelector('.module-footer');
 const mainWrapper = document.querySelector('[data-section="mainWrapper"]');
 const legalWrapper = document.querySelector('[data-section="legalWrapper"]');
 const resourcesWrapper = document.querySelector('[data-section="resourcesWrapper"]');
@@ -69,17 +67,13 @@ const cancelPreview = () => {
     }
 };
 
-// --- MANEJADORES DE CIERRE ESPECÍFICOS (CORREGIDOS) ---
-
 const handleEscKey = (event) => {
     if (event.key === 'Escape') {
-        // Cierra cualquier módulo abierto
         window.dispatchEvent(new CustomEvent('module-opening', { detail: { moduleToKeepOpen: null } }));
     }
 };
 
 const handleOutsideSettingsClick = (event) => {
-    // Si el clic es directamente en el fondo (en móvil) O fuera del contenido (en escritorio)
     if (moduleOptions.classList.contains('active')) {
         if (event.target === moduleOptions || (!moduleOptions.contains(event.target) && !event.target.closest('[data-action="toggleMenu"]'))) {
             closeAndReset();
@@ -87,24 +81,11 @@ const handleOutsideSettingsClick = (event) => {
     }
 };
 
-const handleOutsideFooterClick = (event) => {
-    // Si el clic es directamente en el fondo (en móvil) O fuera del contenido (en escritorio)
-    if (moduleFooter.classList.contains('active')) {
-        if (event.target === moduleFooter || (!moduleFooter.contains(event.target) && !event.target.closest('.footer-button'))) {
-            closeFooterModule();
-        }
-    }
-};
-
-
-// --- FUNCIONES DE CIERRE MODIFICADAS ---
-
 function closeAndReset() {
     if (!moduleOptions.classList.contains('active')) return;
     cancelPreview();
     const activeMenu = moduleOptions.querySelector('.menu-options.active');
     
-    // Si no hay un menú activo dentro (caso raro), simplemente cierra el contenedor
     if (!activeMenu && window.innerWidth > 465) {
         moduleOptions.classList.add('disabled');
         moduleOptions.classList.remove('active');
@@ -131,31 +112,6 @@ function closeAndReset() {
         finishClosing();
     }
 }
-
-function closeFooterModule() {
-    if (!moduleFooter.classList.contains('active')) return;
-    cancelPreview();
-    const menuPanel = moduleFooter.querySelector('.menu-options');
-    if(!menuPanel) return;
-
-    const finishClosing = () => {
-        moduleFooter.classList.add('disabled');
-        moduleFooter.classList.remove('active', 'closing');
-        document.removeEventListener('click', handleOutsideFooterClick);
-        document.removeEventListener('keydown', handleEscKey);
-        menuPanel.removeAttribute('style');
-        menuPanel.classList.remove('animating-in');
-    };
-
-    if (window.innerWidth <= 465) {
-        moduleFooter.classList.add('closing');
-        menuPanel.addEventListener('animationend', finishClosing, { once: true });
-    } else {
-        finishClosing();
-    }
-}
-
-// --- FUNCIONALIDAD ORIGINAL (SIN CAMBIOS) ---
 
 const preloadAllTranslations = async () => {
     const langCodes = Array.from(langLinks).map(link => link.dataset.lang);
@@ -354,7 +310,6 @@ async function initMainController() {
             moduleOptions.classList.add('active');
             resetMenus();
             
-            // Animar en móvil
             const mainMenu = moduleOptions.querySelector('[data-menu="main"]');
             if (window.innerWidth <= 465 && mainMenu) {
                 mainMenu.classList.add('animating-in');
@@ -362,28 +317,6 @@ async function initMainController() {
 
             setTimeout(() => {
                 document.addEventListener('click', handleOutsideSettingsClick);
-                document.addEventListener('keydown', handleEscKey);
-            }, 0);
-        }
-    });
-
-    footerLangButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        if (moduleFooter.classList.contains('active')) {
-            closeFooterModule();
-        } else {
-            window.dispatchEvent(new CustomEvent('module-opening', { detail: { moduleToKeepOpen: 'footer' } }));
-            moduleFooter.classList.remove('disabled');
-            moduleFooter.classList.add('active');
-            
-            // Animar en móvil
-            const footerMenu = moduleFooter.querySelector('.menu-options');
-            if (window.innerWidth <= 465 && footerMenu) {
-                footerMenu.classList.add('animating-in');
-            }
-
-            setTimeout(() => {
-                document.addEventListener('click', handleOutsideFooterClick);
                 document.addEventListener('keydown', handleEscKey);
             }, 0);
         }
@@ -402,7 +335,6 @@ async function initMainController() {
     window.addEventListener('module-opening', (event) => {
         const { moduleToKeepOpen } = event.detail;
         if (moduleToKeepOpen !== 'settings') closeAndReset();
-        if (moduleToKeepOpen !== 'footer') closeFooterModule();
     });
 
     themeLinks.forEach(link => {
@@ -439,5 +371,4 @@ async function initMainController() {
     history.replaceState({section: initialSection}, '', window.location.href);
 }
 
-// **CLAVE: Exportaciones restauradas para que otros módulos funcionen.**
-export { closeAndReset, closeFooterModule, initMainController, allTranslations };
+export { closeAndReset, initMainController, allTranslations };
