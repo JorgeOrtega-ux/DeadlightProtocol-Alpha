@@ -294,9 +294,9 @@
     flex-direction: column;
     width: 380px;
     height: 100%;
-    background-color: var(--bg-secondary);
+    background-color: var(--bg-tertiary);
     border-radius: 12px;
-    border: 1px solid transparent;
+    border: 1px solid var(--component-border-color);
     filter: drop-shadow(0 4px 12px #00000020);
 }
 
