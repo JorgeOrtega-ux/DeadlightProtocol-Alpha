@@ -65,9 +65,9 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--menu-border-color);
+    border: 1px solid var(--component-border-color);
     align-items: flex-start;
-    box-shadow: var(--menu-box-shadow);
+    box-shadow: var(--component-box-shadow);
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     cursor: pointer;
     position: relative;
@@ -122,20 +122,16 @@
 
 .resources-carousel-container {
     position: relative;
-    background: #000000;
-    color: #FFFFFF;
+    background: var(--bg-accent-block);
+    color: var(--text-on-accent);
     border-radius: 12px;
     padding: 40px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
     min-height: 320px;
-    border: 1px solid var(--menu-border-color);
-    box-shadow: var(--menu-box-shadow);
-}
-
-html.dark-theme .resources-carousel-container {
-    background-color: #252627;
+    border: 1px solid var(--component-border-color);
+    box-shadow: var(--component-box-shadow);
 }
 
 .carousel-slides {
@@ -190,7 +186,7 @@ html.dark-theme .resources-carousel-container {
 .resource-button {
     display: inline-block;
     text-decoration: none;
-    color: #FFFFFF;
+    color: var(--text-on-accent);
     background-color: transparent;
     border: 1px solid #FFFFFF4D;
     padding: 8px 20px;
@@ -373,11 +369,9 @@ html.dark-theme .resources-carousel-container {
     border: 1px solid var(--border-color);
     background-color: transparent;
     border-radius: 8px;
-    /* Cambio: Se añade outline: none para quitar el borde de foco */
     outline: none;
 }
 
-/* Cambio: Se añade un selector :focus para asegurar que no haya sombra */
 .menu-overlay-input > input:focus {
     box-shadow: none;
 }
@@ -515,8 +509,8 @@ html.dark-theme .resources-carousel-container {
     color: var(--text-primary);
     background-color: var(--bg-tertiary);
     border-radius: 12px;
-    border: 1px solid var(--menu-border-color);
-    box-shadow: var(--menu-box-shadow);
+    border: 1px solid var(--component-border-color);
+    box-shadow: var(--component-box-shadow);
 }
 
 @media (max-width: 465px) {
