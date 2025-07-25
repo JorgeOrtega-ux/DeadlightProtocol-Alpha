@@ -2,7 +2,6 @@
 /* --- 1. IMPORTACIONES DE FUENTES --- */
 /* ============================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
 
@@ -468,7 +467,7 @@ body {
 .resources-carousel-container {
     display: flex; /* <-- CAMBIO AÑADIDO */
     flex-direction: column; /* <-- CAMBIO AÑADIDO */
-    min-height: 320px;
+    min-height: 335px;
     padding: 40px;
     background: var(--bg-accent-block);
     color: var(--text-on-accent);
@@ -527,11 +526,11 @@ body {
     border-radius: 50px;
     font-weight: 500;
     transition: border-color 0.2s ease;
+    cursor: pointer;
 }
 
 .resource-button:hover {
-    background-color: #FFFFFF1A;
-    border-color: #FFFFFFB3;
+    background-color: #ffffff20;
 }
 
 .carousel-navigation {
@@ -726,6 +725,7 @@ body {
     cursor: pointer;
     transition: opacity 0.2s ease;
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .footer-column a:hover {
