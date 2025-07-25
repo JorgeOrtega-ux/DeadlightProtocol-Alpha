@@ -10,12 +10,21 @@ export function initResourcesCarousel() {
     let autoRotateInterval;
 
     function showSlide(newIndex) {
+        // Itera sobre cada slide para actualizar sus clases
         slides.forEach((slide, idx) => {
-            slide.classList.toggle('active', idx === newIndex);
+            // Comprueba si el slide actual es el que se debe mostrar
+            const isActive = idx === newIndex;
+            
+            // Añade o quita 'active' y 'disabled' según corresponda
+            slide.classList.toggle('active', isActive);
+            slide.classList.toggle('disabled', !isActive);
         });
+
+        // Actualiza los puntos de navegación
         dots.forEach((dot, idx) => {
             dot.classList.toggle('active', idx === newIndex);
         });
+
         currentIndex = newIndex;
     }
 
@@ -39,6 +48,7 @@ export function initResourcesCarousel() {
         });
     });
 
+    // Asegura que el estado inicial sea correcto y comienza la rotación
     showSlide(currentIndex);
     startAutoRotate();
 }
