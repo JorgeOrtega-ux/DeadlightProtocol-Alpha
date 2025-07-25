@@ -1,6 +1,6 @@
 import { allTranslations } from './main-controller.js';
 
-// Exporta la función de cierre para que drag-controller pueda usarla
+// Exporta la función de cierre del overlay de video para que drag-controller pueda usarla
 export function closeVideoOverlay() {
     const moduleOverlay = document.querySelector('.module-overlay');
     if (!moduleOverlay || !moduleOverlay.classList.contains('active')) return;
@@ -24,6 +24,33 @@ export function closeVideoOverlay() {
     }
 }
 
+// Exporta la función de cierre del menú de calidades para que sea accesible globalmente
+export const closeStudioModule = () => {
+    const studioModule = document.querySelector('.module-studio');
+    if (!studioModule || studioModule.classList.contains('disabled')) return;
+    const menuStudio = studioModule.querySelector('.menu-studio');
+
+    const finishClosing = () => {
+        studioModule.classList.add('disabled');
+        studioModule.classList.remove('active', 'closing');
+        if (menuStudio) {
+            menuStudio.classList.remove('animating-in');
+            // Clave: Elimina los estilos en línea para resetear el estado del menú
+            menuStudio.removeAttribute('style');
+        }
+        document.removeEventListener('click', handleOutsideStudioClick);
+    };
+
+    if (window.innerWidth <= 465 && menuStudio) {
+        studioModule.classList.add('closing');
+        menuStudio.addEventListener('animationend', finishClosing, { once: true });
+    } else {
+        finishClosing();
+    }
+};
+
+// Se declara aquí para que closeStudioModule pueda acceder a ella
+let handleOutsideStudioClick;
 
 export function initVideoController() {
     const toolCards = document.querySelectorAll('.tool-card');
@@ -36,36 +63,15 @@ export function initVideoController() {
     const menuOverlay = moduleOverlay?.querySelector('.menu-overlay');
     const menuStudio = studioModule?.querySelector('.menu-studio');
 
-    if (!moduleOverlay) return;
+    if (!moduleOverlay || !qualitySelector || !studioModule) return;
     
+    const qualitySelectorText = qualitySelector.querySelector('.quality-selector-text');
+    const qualityOptions = studioModule.querySelectorAll('#quality-options-list .menu-link');
     let activePlatformKey = null;
 
     // --- MANEJADORES DE CIERRE ---
-    const closeStudioModule = () => {
-        if (!studioModule || studioModule.classList.contains('disabled')) return;
-
-        const finishClosing = () => {
-            studioModule.classList.add('disabled');
-            studioModule.classList.remove('active', 'closing');
-            if (menuStudio) {
-                menuStudio.classList.remove('animating-in');
-                menuStudio.removeAttribute('style');
-            }
-            document.removeEventListener('click', handleOutsideStudioClick);
-        };
-
-        if (window.innerWidth <= 465 && menuStudio) {
-            studioModule.classList.add('closing');
-            menuStudio.addEventListener('animationend', finishClosing, { once: true });
-        } else {
-            finishClosing();
-        }
-    };
-
-    // **LÓGICA CORREGIDA AQUÍ**
+    
     const handleOutsideClick = (event) => {
-        // Si el menú de calidades está abierto, no hagas nada.
-        // Deja que handleOutsideStudioClick se encargue.
         if (studioModule && studioModule.classList.contains('active')) {
             return;
         }
@@ -75,7 +81,7 @@ export function initVideoController() {
         }
     };
     
-    const handleOutsideStudioClick = (event) => {
+    handleOutsideStudioClick = (event) => {
         if (menuStudio && !menuStudio.contains(event.target) && !event.target.closest('[data-action="toggleStudio"]')) {
             closeStudioModule();
         }
@@ -137,22 +143,33 @@ export function initVideoController() {
         });
     });
 
-    if (qualitySelector && studioModule) {
-        qualitySelector.addEventListener('click', (event) => {
-            event.stopPropagation();
-            const isStudioDisabled = studioModule.classList.contains('disabled');
-            
-            studioModule.classList.toggle('disabled');
-            studioModule.classList.toggle('active');
+    qualitySelector.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isStudioDisabled = studioModule.classList.contains('disabled');
+        
+        studioModule.classList.toggle('disabled');
+        studioModule.classList.toggle('active');
 
-            if (isStudioDisabled) {
-                if(window.innerWidth <= 465 && menuStudio) menuStudio.classList.add('animating-in');
-                setTimeout(() => document.addEventListener('click', handleOutsideStudioClick), 0);
-            } else {
-                document.removeEventListener('click', handleOutsideStudioClick);
+        if (isStudioDisabled) {
+            if(window.innerWidth <= 465 && menuStudio) menuStudio.classList.add('animating-in');
+            setTimeout(() => document.addEventListener('click', handleOutsideStudioClick), 0);
+        } else {
+            document.removeEventListener('click', handleOutsideStudioClick);
+        }
+    });
+
+    qualityOptions.forEach(option => {
+        option.addEventListener('click', (event) => {
+            event.stopPropagation();
+            const selectedQuality = option.querySelector('.menu-link-text').textContent;
+            
+            if (qualitySelectorText) {
+                qualitySelectorText.textContent = selectedQuality;
             }
+            
+            closeStudioModule();
         });
-    }
+    });
 
     window.addEventListener('module-opening', (event) => {
         if (event.detail.moduleToKeepOpen !== 'video') {

@@ -1,4 +1,4 @@
-<div class="resources-content">
+<div class="resources-content body-title">
     <div class="resources-carousel-container">
         <div class="carousel-slides">
             <div class="resource-slide" data-slide-content="0">

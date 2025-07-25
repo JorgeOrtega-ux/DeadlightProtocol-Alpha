@@ -1,5 +1,5 @@
 import { closeAndReset, closeFooterModule } from './main-controller.js';
-import { closeVideoOverlay } from './video-controller.js'; // Importa la nueva función
+import { closeVideoOverlay, closeStudioModule } from './video-controller.js';
 
 let isDragging = false;
 let startY = 0;
@@ -9,14 +9,12 @@ let activeMenu = null;
 const dragThreshold = 0.4;
 
 function handleDragStart(e) {
-    const dragHandle = e.target.closest('.drag-handle');
-    if (!dragHandle || window.innerWidth > 465) return;
+    const dragTarget = e.target.closest('.pill-container');
+    if (!dragTarget || window.innerWidth > 465) return;
     
-    // Ahora busca cualquier panel que pueda ser arrastrado
-    activeMenu = dragHandle.closest('.menu-options, .menu-overlay, .menu-studio');
+    activeMenu = dragTarget.closest('.menu-options, .menu-overlay, .menu-studio');
     if (!activeMenu) return;
 
-    // Busca el contenedor principal del módulo
     const moduleWrapper = activeMenu.closest('.module-options, .module-footer, .module-overlay, .module-studio');
     if (!moduleWrapper || moduleWrapper.classList.contains('closing')) return;
 
@@ -52,10 +50,12 @@ function handleDragEnd() {
     const menuHeight = activeMenu.offsetHeight;
     const threshold = menuHeight * dragThreshold;
 
+    // Guardamos una referencia local al menú activo.
+    const menuToAnimate = activeMenu;
+
     if (deltaY > threshold) {
-        const moduleWrapper = activeMenu.closest('.module-options, .module-footer, .module-overlay, .module-studio');
+        const moduleWrapper = menuToAnimate.closest('.module-options, .module-footer, .module-overlay, .module-studio');
         
-        // Determina qué función de cierre llamar
         if (moduleWrapper.classList.contains('module-options')) {
             closeAndReset();
         } else if (moduleWrapper.classList.contains('module-footer')) {
@@ -63,21 +63,27 @@ function handleDragEnd() {
         } else if (moduleWrapper.classList.contains('module-overlay')) {
             closeVideoOverlay();
         } else if (moduleWrapper.classList.contains('module-studio')) {
-            // Asumimos que el cierre de studio es manejado por su propio controlador si es complejo
-            // o podemos crear una función exportada para él también. Por ahora, esto funciona.
-            moduleWrapper.classList.add('disabled');
-            moduleWrapper.classList.remove('active');
+            closeStudioModule();
         }
 
     } else {
-        activeMenu.style.transition = 'transform 0.3s ease';
-        activeMenu.style.transform = 'translateY(0)';
+        // Anima el menú para que vuelva a su posición original.
+        menuToAnimate.style.transition = 'transform 0.3s ease';
+        menuToAnimate.style.transform = 'translateY(0)';
         
-        activeMenu.addEventListener('transitionend', () => {
-            activeMenu.removeAttribute('style');
-        }, { once: true });
+        // === INICIO DE LA CORRECCIÓN ===
+        // Se usa la referencia local (menuToAnimate) para asegurar que el
+        // estilo se elimina del elemento correcto después de la animación.
+        menuToAnimate.addEventListener('transitionend', () => {
+            // Solo elimina el estilo si no se está arrastrando de nuevo.
+            if (!isDragging) {
+                menuToAnimate.removeAttribute('style');
+            }
+        }, { once: true }); // 'once: true' limpia el listener automáticamente.
+        // === FIN DE LA CORRECCIÓN ===
     }
 
+    // Limpiamos la variable global para el próximo arrastre.
     activeMenu = null;
 }
 

@@ -534,8 +534,8 @@ html.dark-theme .resources-carousel-container {
         .menu-studio {
             width: 100%;
             height: auto;
-            max-height: 90vh;
-            min-height: 90vh;
+            max-height: 90%;
+            min-height: 90%;
             border-radius: 12px;
             padding-top: 0;
             border-bottom-left-radius: 0;
