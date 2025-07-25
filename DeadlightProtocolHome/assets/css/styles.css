@@ -283,11 +283,6 @@ body {
     gap: 20px;
 }
 
-html.dark-theme .footer {
-    background: #252627;
-    border: 1px solid #ffffff20;
-}
-
 .footer-item {
     display: flex;
     align-items: center;

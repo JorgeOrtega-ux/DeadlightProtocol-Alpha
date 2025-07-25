@@ -373,6 +373,13 @@ html.dark-theme .resources-carousel-container {
     border: 1px solid var(--border-color);
     background-color: transparent;
     border-radius: 8px;
+    /* Cambio: Se añade outline: none para quitar el borde de foco */
+    outline: none;
+}
+
+/* Cambio: Se añade un selector :focus para asegurar que no haya sombra */
+.menu-overlay-input > input:focus {
+    box-shadow: none;
 }
 
 .menu-overlay-bottom button {
