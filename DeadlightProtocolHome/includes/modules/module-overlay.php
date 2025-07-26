@@ -9,12 +9,17 @@
             </div>
         </div>
         <div class="menu-overlay-center">
-            <div id="video-processing-message" class="menu-overlay-message disabled">
-                <div class="loader-spinner"></div>
-                <span>Procesando, por favor espera...</span>
-            </div>
-            <div id="video-error-message" class="menu-overlay-message error disabled">
-                <span></span>
+            <div class="menu-overlay-messages">
+                <div id="initial-message" class="menu-overlay-message active">
+                    <span>Escribe o pega una URL para comenzar</span>
+                </div>
+                <div id="video-processing-message" class="menu-overlay-message disabled">
+                    <div class="loader-spinner"></div>
+                    <span>Procesando, por favor espera...</span>
+                </div>
+                <div id="video-error-message" class="menu-overlay-message error disabled">
+                    <span></span>
+                </div>
             </div>
             <div class="menu-overlay-layout disabled" id="video-card-layout">
                 <div class="video-thumbnail">
