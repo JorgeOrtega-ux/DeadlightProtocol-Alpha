@@ -1,7 +1,4 @@
-// assets/js/main-controller.js
-
-export function initMainController() {
-    // --- Variables de Estado y Configuración ---
+function initMainController() {
     const config = {
         allowEscToClose: true,
         allowMultipleActiveModules: false,
@@ -12,13 +9,11 @@ export function initMainController() {
         isModuleOptionsActive: false,
     };
 
-    // ✅ Objeto de estado para las secciones
     const sectionState = {
-        isSectionHomeActive: true, // Inicia en true porque es la sección por defecto
+        isSectionHomeActive: true,
         isSectionCollectionActive: false,
     };
 
-    // --- Selectores del DOM ---
     const selectors = {
         actionButtons: document.querySelectorAll('[data-action="toggleModuleSidebar"], [data-action="toggleModuleOptions"]'),
         allModules: document.querySelectorAll('[data-module]'),
@@ -26,19 +21,16 @@ export function initMainController() {
         sections: document.querySelectorAll('.section-content[data-section]'),
         menuNavLinks: document.querySelectorAll('.module-options [data-action="navigateTo"]'),
     };
-    
-    // ✅ NUEVA FUNCIÓN DE LOGGING ANIDADO
+
     function logStatus() {
         console.groupCollapsed('DeadlightProtocol - (Modules/Sections)');
         
-        // Log de Módulos
         console.groupCollapsed('Module Status');
         for (const [key, value] of Object.entries(moduleState)) {
             console.log(`${key}: %c${value}`, 'font-weight: bold;');
         }
         console.groupEnd();
 
-        // Log de Secciones
         console.groupCollapsed('Section Status');
         for (const [key, value] of Object.entries(sectionState)) {
             console.log(`${key}: %c${value}`, 'font-weight: bold;');
@@ -48,7 +40,6 @@ export function initMainController() {
         console.groupEnd();
     }
 
-    // --- Funciones de Módulos (Sidebar, Opciones) ---
     function deactivateModule(module) {
         module.classList.remove('active');
         module.classList.add('disabled');
@@ -85,7 +76,6 @@ export function initMainController() {
         selectors.allModules.forEach(deactivateModule);
     }
 
-    // --- Lógica de Eventos ---
     function handleModuleToggle(event) {
         event.stopPropagation();
         const action = this.getAttribute('data-action');
@@ -105,7 +95,7 @@ export function initMainController() {
         } else {
             activateModule(targetModule);
         }
-        logStatus(); // ✅ Llama al log en cada cambio de módulo
+        logStatus();
     }
 
     function handleSectionToggle() {
@@ -118,11 +108,9 @@ export function initMainController() {
         
         if (!targetSection) return;
 
-        // ✅ Actualiza el estado de las secciones
         sectionState.isSectionHomeActive = (targetSectionName === 'sectionHome');
         sectionState.isSectionCollectionActive = (targetSectionName === 'sectionCollection');
 
-        // Actualiza el DOM
         selectors.sectionMenuLinks.forEach(link => link.classList.remove('active'));
         this.classList.add('active');
         
@@ -133,7 +121,7 @@ export function initMainController() {
 
         targetSection.classList.remove('disabled');
         targetSection.classList.add('active');
-        logStatus(); // ✅ Llama al log en cada cambio de sección
+        logStatus();
     }
 
     function handleMenuNavigation(event) {
@@ -156,7 +144,6 @@ export function initMainController() {
         }
     }
 
-    // --- Asignación de Eventos ---
     selectors.actionButtons.forEach(button => button.addEventListener('click', handleModuleToggle));
     selectors.sectionMenuLinks.forEach(link => link.addEventListener('click', handleSectionToggle));
     selectors.menuNavLinks.forEach(link => link.addEventListener('click', handleMenuNavigation));
@@ -165,17 +152,18 @@ export function initMainController() {
         const isClickInsideModule = event.target.closest('[data-module]');
         if (!isClickInsideModule && document.querySelector('[data-module].active')) {
             deactivateAllModules();
-            logStatus(); // ✅ Llama al log al cerrar módulos
+            logStatus();
         }
     });
 
     document.addEventListener('keydown', (event) => {
         if (config.allowEscToClose && event.key === 'Escape' && document.querySelector('[data-module].active')) {
             deactivateAllModules();
-            logStatus(); // ✅ Llama al log al cerrar módulos
+            logStatus();
         }
     });
 
-    // ✅ Log inicial al cargar la página
     logStatus();
 }
+
+export { initMainController };
