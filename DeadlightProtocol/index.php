@@ -29,16 +29,93 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="module-options disabled" data-module="moduleOptions">
-                            <div class="menu-content">
+                        
+                        <div class="module-options body-title disabled" data-module="moduleOptions">
+                            <div class="menu-content disabled" data-menu="main">
+                                <div class="menu-list">
+                                    <div class="menu-link" data-action="navigateTo" data-target-menu="settings">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">settings</span></div>
+                                        <div class="menu-link-text"><span>Configuración</span></div>
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">chevron_right</span></div>
+                                    </div>
+                                    <div class="menu-link" data-action="navigateTo" data-target-menu="help">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">help</span></div>
+                                        <div class="menu-link-text"><span>Ayuda y recursos</span></div>
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">chevron_right</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="menu-content disabled" data-menu="settings">
+                                <div class="menu-list">
+                                    <div class="menu-link" data-action="navigateTo" data-target-menu="appearance">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">palette</span></div>
+                                        <div class="menu-link-text"><span>Aspecto</span></div>
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">chevron_right</span></div>
+                                    </div>
+                                    <div class="menu-link" data-action="navigateTo" data-target-menu="language">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">language</span></div>
+                                        <div class="menu-link-text"><span>Lenguaje</span></div>
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">chevron_right</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">location_on</span></div>
+                                        <div class="menu-link-text"><span>Ubicación</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="menu-content disabled" data-menu="appearance">
                                 <div class="menu-list">
                                     <div class="menu-link">
-                                        <div class="menu-link-icon">
-                                            <span class="material-symbols-rounded">settings</span>
-                                        </div>
-                                        <div class="menu-link-text">
-                                            <span>Configuracion</span>
-                                        </div>
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">brightness_auto</span></div>
+                                        <div class="menu-link-text"><span>Sincronizar con el sistema</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">dark_mode</span></div>
+                                        <div class="menu-link-text"><span>Tema oscuro</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">light_mode</span></div>
+                                        <div class="menu-link-text"><span>Tema claro</span></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="menu-content disabled" data-menu="language">
+                                <div class="menu-list">
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">language</span></div>
+                                        <div class="menu-link-text"><span>English (United States)</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">language</span></div>
+                                        <div class="menu-link-text"><span>Español (Mexico)</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">language</span></div>
+                                        <div class="menu-link-text"><span>Français (France)</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="menu-content disabled" data-menu="help">
+                                <div class="menu-list">
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">gavel</span></div>
+                                        <div class="menu-link-text"><span>Política de privacidad</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">description</span></div>
+                                        <div class="menu-link-text"><span>Términos y condiciones</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">cookie</span></div>
+                                        <div class="menu-link-text"><span>Política de cookies</span></div>
+                                    </div>
+                                    <div class="menu-link">
+                                        <div class="menu-link-icon"><span class="material-symbols-rounded">feedback</span></div>
+                                        <div class="menu-link-text"><span>Enviar comentarios</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -46,34 +123,24 @@
                     </div>
                 </div>
                 <div class="general-content-bottom">
-                    <div class="module-sidebar disabled" data-module="moduleSidebar">
+                    <div class="module-sidebar body-title disabled" data-module="moduleSidebar">
                         <div class="menu-content">
                             <div class="menu-list">
-                                <div class="menu-link">
-                                    <div class="menu-link-icon">
-                                        <span class="material-symbols-rounded">home</span>
-                                    </div>
-                                    <div class="menu-link-text">
-                                        <span>Pagina principal</span>
-                                    </div>
+                                <div class="menu-link active" data-action="toggleSectionHome">
+                                    <div class="menu-link-icon"><span class="material-symbols-rounded">home</span></div>
+                                    <div class="menu-link-text"><span>Pagina principal</span></div>
                                 </div>
-                                <div class="menu-link">
-                                    <div class="menu-link-icon">
-                                        <span class="material-symbols-rounded">
-                                            folder_open
-                                        </span>
-                                    </div>
-                                    <div class="menu-link-text">
-                                        <span>Colección Personal</span>
-                                    </div>
+                                <div class="menu-link" data-action="toggleSectionCollection">
+                                    <div class="menu-link-icon"><span class="material-symbols-rounded">folder_open</span></div>
+                                    <div class="menu-link-text"><span>Colección Personal</span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="general-content-scrolleable">
                         <div class="section-wrapper">
-                            <div class="section-content active">pagina principal</div>
-                            <div class="section-content disabled">coleccion Personal</div>
+                            <div class="section-content active" data-section="sectionHome">pagina principal</div>
+                            <div class="section-content disabled" data-section="sectionCollection">coleccion Personal</div>
                         </div>
                     </div>
                 </div>
@@ -81,110 +148,7 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // --- Variables de configuración ---
-            let allowEscToClose = true;
-            let allowMultipleActiveModules = false;
-
-            // --- NUEVO: Variables de estado para cada módulo ---
-            let isActiveModuleSidebar = false;
-            let isActiveModuleOptions = false;
-
-            // --- Selectores específicos ---
-            const actionButtons = document.querySelectorAll('[data-action="toggleModuleSidebar"], [data-action="toggleModuleOptions"]');
-            const allModules = document.querySelectorAll('[data-module="moduleSidebar"], [data-module="moduleOptions"]');
-
-            // --- NUEVO: Función para mostrar el estado en consola ---
-            function logModuleStatus() {
-                console.groupCollapsed('DeadlightProtocol - (Modules)');
-                console.log(`allowEscToClose: %c${allowEscToClose}`, 'font-weight: bold;');
-                console.log(`allowMultipleActiveModules: %c${allowMultipleActiveModules}`, 'font-weight: bold;');
-                console.log(`isActiveModuleSidebar: %c${isActiveModuleSidebar}`, 'font-weight: bold;');
-                console.log(`isActiveModuleOptions: %c${isActiveModuleOptions}`, 'font-weight: bold;');
-                console.groupEnd();
-            }
-
-            // Función para desactivar un módulo (actualiza clases y estado)
-            function deactivateModule(module) {
-                module.classList.remove('active');
-                module.classList.add('disabled');
-                if (module.dataset.module === 'moduleSidebar') isActiveModuleSidebar = false;
-                if (module.dataset.module === 'moduleOptions') isActiveModuleOptions = false;
-            }
-
-            // Función para activar un módulo (actualiza clases y estado)
-            function activateModule(module) {
-                module.classList.remove('disabled');
-                module.classList.add('active');
-                if (module.dataset.module === 'moduleSidebar') isActiveModuleSidebar = true;
-                if (module.dataset.module === 'moduleOptions') isActiveModuleOptions = true;
-            }
-
-            // Función para desactivar TODOS los módulos
-            function deactivateAllModules() {
-                allModules.forEach(deactivateModule);
-            }
-
-            // Manejador de clics en los botones de acción
-            actionButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.stopPropagation();
-
-                    const action = this.getAttribute('data-action');
-                    const moduleNameRaw = action.replace('toggle', '');
-                    const moduleName = moduleNameRaw.charAt(0).toLowerCase() + moduleNameRaw.slice(1);
-                    const targetModule = document.querySelector(`[data-module="${moduleName}"]`);
-
-                    if (!targetModule) return;
-
-                    const isTargetModuleActive = targetModule.classList.contains('active');
-
-                    if (!allowMultipleActiveModules) {
-                        deactivateAllModules();
-                    }
-
-                    if (isTargetModuleActive) {
-                        deactivateModule(targetModule);
-                    } else {
-                        activateModule(targetModule);
-                    }
-
-                    logModuleStatus(); // Genera un log después de cada acción de un botón
-                });
-            });
-
-            // --- Manejadores para cerrar los módulos ---
-
-            // 1. Cerrar al hacer clic fuera
-            document.addEventListener('click', function(event) {
-                const isClickInsideModule = event.target.closest('[data-module]');
-                const isClickOnButton = event.target.closest('[data-action]');
-
-                // Solo actúa si hay módulos activos
-                const activeModules = document.querySelector('[data-module].active');
-
-                if (!isClickInsideModule && !isClickOnButton && activeModules) {
-                    deactivateAllModules();
-                    logModuleStatus(); // Genera log si se cerraron módulos
-                }
-            });
-
-            // 2. Cerrar al presionar la tecla 'Escape'
-            document.addEventListener('keydown', function(event) {
-                const activeModules = document.querySelector('[data-module].active');
-
-                if (allowEscToClose && event.key === 'Escape' && activeModules) {
-                    deactivateAllModules();
-                    logModuleStatus(); // Genera log si se cerraron módulos
-                }
-            });
-
-            // --- Log inicial al cargar la página ---
-            logModuleStatus();
-        });
-    </script>
-
+    <script type="module" src="assets/js/app-init.js"></script>
 </body>
 
 </html>
