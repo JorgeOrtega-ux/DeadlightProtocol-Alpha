@@ -1,4 +1,57 @@
 import { cancelActiveChange } from './options-controller.js';
+// Importa la nueva función de animación desde el controlador móvil.
+import { closeOptionsModuleWithAnimation } from './mobile-drag-controller.js';
+
+let moduleState = {};
+let sectionState = {};
+let selectors = {};
+
+function deactivateModule(module) {
+    const moduleName = module.dataset.module;
+
+    if (module.classList.contains('active') && moduleName === 'moduleOptions') {
+        cancelActiveChange();
+    }
+
+    module.classList.remove('active');
+    module.classList.add('disabled');
+    
+    if (moduleName === 'moduleSidebar') moduleState.isModuleSidebarActive = false;
+    if (moduleName === 'moduleOptions') {
+        moduleState.isModuleOptionsActive = false;
+        const allSubMenus = module.querySelectorAll('[data-menu]');
+        allSubMenus.forEach(menu => {
+            menu.classList.remove('active');
+            menu.classList.add('disabled');
+        });
+    }
+}
+
+function logStatus() {
+    console.groupCollapsed('DeadlightProtocol - (Modules/Sections)');
+    console.groupCollapsed('Module Status');
+    for (const [key, value] of Object.entries(moduleState)) {
+        console.log(`${key}: %c${value}`, 'font-weight: bold;');
+    }
+    console.groupEnd();
+    console.groupCollapsed('Section Status');
+    for (const [key, value] of Object.entries(sectionState)) {
+        console.log(`${key}: %c${value}`, 'font-weight: bold;');
+    }
+    console.groupEnd();
+    console.groupEnd();
+}
+
+export function deactivateAllModules() {
+    if (selectors.allModules) {
+        selectors.allModules.forEach(module => {
+            if(module.classList.contains('active')) {
+                deactivateModule(module);
+            }
+        });
+    }
+    logStatus();
+}
 
 function initMainController() {
     const config = {
@@ -6,71 +59,23 @@ function initMainController() {
         allowMultipleActiveModules: false,
     };
 
-    const moduleState = {
+    moduleState = {
         isModuleSidebarActive: false,
         isModuleOptionsActive: false,
     };
-
-    const sectionState = {
+    sectionState = {
         isSectionHomeActive: true,
         isSectionCollectionActive: false,
         isSectionTrashActive: false,
     };
-
-    const selectors = {
+    selectors = {
         actionButtons: document.querySelectorAll('[data-action="toggleModuleSidebar"], [data-action="toggleModuleOptions"]'),
         allModules: document.querySelectorAll('[data-module]'),
         sectionMenuLinks: document.querySelectorAll('.module-sidebar .menu-link[data-action^="toggleSection"]'),
         sections: document.querySelectorAll('.section-content[data-section]'),
         menuNavLinks: document.querySelectorAll('.module-options [data-action="navigateTo"]'),
     };
-
-    function logStatus() {
-        console.groupCollapsed('DeadlightProtocol - (Modules/Sections)');
-        
-        console.groupCollapsed('Module Status');
-        for (const [key, value] of Object.entries(moduleState)) {
-            console.log(`${key}: %c${value}`, 'font-weight: bold;');
-        }
-        console.groupEnd();
-
-        console.groupCollapsed('Section Status');
-        for (const [key, value] of Object.entries(sectionState)) {
-            console.log(`${key}: %c${value}`, 'font-weight: bold;');
-        }
-        console.groupEnd();
-
-        console.groupEnd();
-    }
     
-    function deactivateAllModules() {
-        selectors.allModules.forEach(module => {
-            deactivateModule(module);
-        });
-        logStatus();
-    }
-
-    function deactivateModule(module) {
-        const moduleName = module.dataset.module;
-
-        if (module.classList.contains('active') && moduleName === 'moduleOptions') {
-            cancelActiveChange();
-        }
-
-        module.classList.remove('active');
-        module.classList.add('disabled');
-        
-        if (moduleName === 'moduleSidebar') moduleState.isModuleSidebarActive = false;
-        if (moduleName === 'moduleOptions') {
-            moduleState.isModuleOptionsActive = false;
-            const allSubMenus = module.querySelectorAll('[data-menu]');
-            allSubMenus.forEach(menu => {
-                menu.classList.remove('active');
-                menu.classList.add('disabled');
-            });
-        }
-    }
-
     function activateModule(module) {
         module.classList.remove('disabled');
         module.classList.add('active');
@@ -103,7 +108,12 @@ function initMainController() {
         }
 
         if (isTargetModuleActive) {
-            deactivateModule(targetModule);
+            // Si el módulo a cerrar es el de opciones y estamos en móvil, usa la animación.
+            if (targetModule.dataset.module === 'moduleOptions' && window.innerWidth <= 468) {
+                closeOptionsModuleWithAnimation();
+            } else {
+                deactivateModule(targetModule);
+            }
         } else {
             activateModule(targetModule);
         }
@@ -157,7 +167,6 @@ function initMainController() {
         }
     }
     
-    // --- Asignación de Eventos ---
     selectors.actionButtons.forEach(button => button.addEventListener('click', handleModuleToggle));
     selectors.sectionMenuLinks.forEach(link => link.addEventListener('click', handleSectionToggle));
     selectors.menuNavLinks.forEach(link => link.addEventListener('click', handleMenuNavigation));
@@ -166,17 +175,29 @@ function initMainController() {
         const activeModule = document.querySelector('[data-module].active');
         if (!activeModule) return;
 
+        // No manejes el clic si fue dentro de un módulo, a menos que sea el overlay.
+        const isClickInsideModule = event.target.closest('[data-module]');
         const isClickOnOverlay = event.target === activeModule;
-        const isClickOutsideAllModules = !event.target.closest('[data-module]');
 
-        if (isClickOnOverlay || isClickOutsideAllModules) {
-            deactivateAllModules();
+        if (isClickOnOverlay && !isClickInsideModule.querySelector('.menu-content').contains(event.target)) {
+             if (activeModule.dataset.module === 'moduleOptions' && window.innerWidth <= 468) {
+                closeOptionsModuleWithAnimation();
+            } else {
+                deactivateAllModules();
+            }
         }
     });
 
     document.addEventListener('keydown', (event) => {
-        if (config.allowEscToClose && event.key === 'Escape' && document.querySelector('[data-module].active')) {
-            deactivateAllModules();
+        if (config.allowEscToClose && event.key === 'Escape') {
+            const activeModule = document.querySelector('[data-module].active');
+            if (activeModule) {
+                if (activeModule.dataset.module === 'moduleOptions' && window.innerWidth <= 468) {
+                    closeOptionsModuleWithAnimation();
+                } else {
+                    deactivateAllModules();
+                }
+            }
         }
     });
 
