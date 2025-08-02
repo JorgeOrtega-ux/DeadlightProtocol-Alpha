@@ -1,4 +1,6 @@
-function initMainController() {
+import { cancelActiveChange } from './options-controller.js'; // Importación directa
+
+function initMainController() { // Ya no recibe parámetros
     const config = {
         allowEscToClose: true,
         allowMultipleActiveModules: false,
@@ -49,6 +51,9 @@ function initMainController() {
         if (moduleName === 'moduleSidebar') moduleState.isModuleSidebarActive = false;
         if (moduleName === 'moduleOptions') {
             moduleState.isModuleOptionsActive = false;
+            // Llama a la función importada directamente
+            cancelActiveChange(); 
+            
             const allSubMenus = module.querySelectorAll('[data-menu]');
             allSubMenus.forEach(menu => {
                 menu.classList.remove('active');
@@ -109,7 +114,6 @@ function initMainController() {
         
         if (!targetSection) return;
 
-        // Actualizar el estado de todas las secciones
         sectionState.isSectionHomeActive = (targetSectionName === 'sectionHome');
         sectionState.isSectionCollectionActive = (targetSectionName === 'sectionCollection');
         sectionState.isSectionTrashActive = (targetSectionName === 'sectionTrash');

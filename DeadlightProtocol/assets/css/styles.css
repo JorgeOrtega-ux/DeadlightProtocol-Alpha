@@ -35,16 +35,13 @@ body {
 }
 
 /* ====================================== */
-/* ========== PAGE WRAPPER ============= */
+/* ============= LAYOUT ================= */
 /* ====================================== */
 .page-wrapper {
     width: 100%;
     height: 100%;
 }
 
-/* ====================================== */
-/* ========== MAIN CONTENT ============== */
-/* ====================================== */
 .main-content {
     display: flex;
     gap: 8px;
@@ -144,7 +141,6 @@ body {
     height: 100%;
     top: 0;
     left: 0;
-
     z-index: 999;
 }
 
@@ -165,7 +161,6 @@ body {
     justify-content: space-between;
     width: 300px;
     height: 100%;
-
     padding: 8px;
     border-radius: 12px;
     background-color: #ffffff;
@@ -173,18 +168,17 @@ body {
     gap: 8px;
 }
 
-.menu-content {
-    flex-direction: column;
-}
-
 .module-options .menu-content {
     width: 315px;
     height: auto;
     padding: 8px;
     border-radius: 12px;
-    padding: 8px;
     background-color: #ffffff;
     box-shadow: 0 4px 12px #00000020;
+}
+
+.menu-content {
+    flex-direction: column;
 }
 
 /* ====================================== */
@@ -212,15 +206,23 @@ body {
     color: #000000;
     border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .menu-link:hover {
     background-color: #f5f5fa;
 }
 
-.menu-link.active {
+/* Estilo activo para el menú lateral principal */
+.module-sidebar .menu-link.active {
     background-color: #000000;
     color: #ffffff;
+}
+
+/* Estilo activo para el menú de opciones */
+.module-options .menu-link.active {
+    background-color: #f5f5fa;
+    color: #000000;
 }
 
 .menu-link-icon {
@@ -233,16 +235,15 @@ body {
 }
 
 .menu-link-text {
-    display: flex; /* CAMBIADO: de 'block' a 'flex' */
-    justify-content: space-between; /* AÑADIDO */
-    align-items: center; /* AÑADIDO */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex: 1 1 auto;
     align-self: center;
     overflow: hidden;
     text-align: start;
 }
 
-/* NUEVA REGLA */
 .menu-link-value {
     color: #6c757d;
     font-size: 0.8rem;
@@ -275,7 +276,6 @@ body {
     display: none;
 }
 
-
 .pill-container {
     display: none;
     justify-content: center;
@@ -293,13 +293,44 @@ body {
     cursor: pointer;
 }
 
+.disabled-interactive {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.preview-active {
+    background-color: #f5f5fa;
+}
+
+.loader-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #00000090;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ====================================== */
+/* ============ MEDIA QUERIES =========== */
+/* ====================================== */
 @media (max-width: 468px) {
     .pill-container {
         display: flex;
     }
-}
 
-@media (max-width: 468px) {
     .module-options {
         position: fixed;
         top: 0;
