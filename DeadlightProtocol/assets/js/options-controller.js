@@ -109,7 +109,6 @@ function initOptionsController() {
         };
     }
 
-    // ... (El resto de las funciones como applyTheme, setActiveTheme, etc., permanecen iguales)
     function applyTheme(theme) {
         html.classList.remove('dark-theme', 'light-theme');
         if (theme === 'dark') {

@@ -1,6 +1,6 @@
-import { cancelActiveChange } from './options-controller.js'; // Importación directa
+import { cancelActiveChange } from './options-controller.js';
 
-function initMainController() { // Ya no recibe parámetros
+function initMainController() {
     const config = {
         allowEscToClose: true,
         allowMultipleActiveModules: false,
@@ -42,18 +42,27 @@ function initMainController() { // Ya no recibe parámetros
 
         console.groupEnd();
     }
+    
+    function deactivateAllModules() {
+        selectors.allModules.forEach(module => {
+            deactivateModule(module);
+        });
+        logStatus();
+    }
 
     function deactivateModule(module) {
+        const moduleName = module.dataset.module;
+
+        if (module.classList.contains('active') && moduleName === 'moduleOptions') {
+            cancelActiveChange();
+        }
+
         module.classList.remove('active');
         module.classList.add('disabled');
         
-        const moduleName = module.dataset.module;
         if (moduleName === 'moduleSidebar') moduleState.isModuleSidebarActive = false;
         if (moduleName === 'moduleOptions') {
             moduleState.isModuleOptionsActive = false;
-            // Llama a la función importada directamente
-            cancelActiveChange(); 
-            
             const allSubMenus = module.querySelectorAll('[data-menu]');
             allSubMenus.forEach(menu => {
                 menu.classList.remove('active');
@@ -78,10 +87,6 @@ function initMainController() { // Ya no recibe parámetros
         }
     }
 
-    function deactivateAllModules() {
-        selectors.allModules.forEach(deactivateModule);
-    }
-
     function handleModuleToggle(event) {
         event.stopPropagation();
         const action = this.getAttribute('data-action');
@@ -92,6 +97,7 @@ function initMainController() { // Ya no recibe parámetros
         if (!targetModule) return;
 
         const isTargetModuleActive = targetModule.classList.contains('active');
+        
         if (!config.allowMultipleActiveModules && !isTargetModuleActive) {
             deactivateAllModules();
         }
@@ -150,23 +156,27 @@ function initMainController() { // Ya no recibe parámetros
             targetMenu.classList.remove('disabled');
         }
     }
-
+    
+    // --- Asignación de Eventos ---
     selectors.actionButtons.forEach(button => button.addEventListener('click', handleModuleToggle));
     selectors.sectionMenuLinks.forEach(link => link.addEventListener('click', handleSectionToggle));
     selectors.menuNavLinks.forEach(link => link.addEventListener('click', handleMenuNavigation));
 
     document.addEventListener('click', (event) => {
-        const isClickInsideModule = event.target.closest('[data-module]');
-        if (!isClickInsideModule && document.querySelector('[data-module].active')) {
+        const activeModule = document.querySelector('[data-module].active');
+        if (!activeModule) return;
+
+        const isClickOnOverlay = event.target === activeModule;
+        const isClickOutsideAllModules = !event.target.closest('[data-module]');
+
+        if (isClickOnOverlay || isClickOutsideAllModules) {
             deactivateAllModules();
-            logStatus();
         }
     });
 
     document.addEventListener('keydown', (event) => {
         if (config.allowEscToClose && event.key === 'Escape' && document.querySelector('[data-module].active')) {
             deactivateAllModules();
-            logStatus();
         }
     });
 
