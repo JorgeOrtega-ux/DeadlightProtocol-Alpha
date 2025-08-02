@@ -233,11 +233,25 @@ body {
 }
 
 .menu-link-text {
-    display: block;
+    display: flex; /* CAMBIADO: de 'block' a 'flex' */
+    justify-content: space-between; /* AÑADIDO */
+    align-items: center; /* AÑADIDO */
     flex: 1 1 auto;
     align-self: center;
     overflow: hidden;
     text-align: start;
+}
+
+/* NUEVA REGLA */
+.menu-link-value {
+    color: #6c757d;
+    font-size: 0.8rem;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 55%;
+    padding-left: 8px;
 }
 
 /* ====================================== */
